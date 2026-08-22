@@ -4,7 +4,7 @@ import { registerAuthorizedRoomEvent, type RoomEventPayload } from "./socketRoom
 
 export const WORKSHOP_TIMER_EVENT = "workshop-timer-update";
 export const WORKSHOP_TIMER_COMMAND_EVENT = "workshop-timer-command";
-export const WORKSHOP_TIMER_LIMITS = {
+const WORKSHOP_TIMER_LIMITS = {
   commandsPerMinute: 12,
   minDurationMs: 1_000,
   maxDurationMs: 24 * 60 * 60 * 1_000,
@@ -33,7 +33,7 @@ export type WorkshopTimerCommand = RoomEventPayload & {
 
 const roomName = (drawingId: string) => `drawing_${drawingId}`;
 
-export const parseWorkshopTimerCommand = (value: unknown): WorkshopTimerCommand | null => {
+const parseWorkshopTimerCommand = (value: unknown): WorkshopTimerCommand | null => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const data = value as Record<string, unknown>;
   const drawingId = parseDrawingId(data.drawingId);

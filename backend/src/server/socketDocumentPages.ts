@@ -3,7 +3,7 @@ import { parseDrawingId } from "./socketProtocol";
 import { registerAuthorizedRoomEvent, type RoomEventPayload } from "./socketRoomEvent";
 
 export const DOCUMENT_PAGE_EVENT = "document-page-update";
-export const DOCUMENT_PAGE_COMMAND_EVENT = "document-page-command";
+const DOCUMENT_PAGE_COMMAND_EVENT = "document-page-command";
 
 export const DOCUMENT_PAGE_LIMITS = {
   commandsPerMinute: 120,

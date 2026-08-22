@@ -122,7 +122,7 @@ export async function replaceCachedRow(
   return row;
 }
 
-export async function previewCacheBytes(prisma: any, ownerUserId?: string): Promise<number> {
+async function previewCacheBytes(prisma: any, ownerUserId?: string): Promise<number> {
   const result = await prisma.storedBlob.aggregate({
     where: {
       OR: ownerUserId

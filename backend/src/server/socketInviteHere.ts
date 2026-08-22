@@ -4,7 +4,7 @@ import type { PresenceEntry } from "./presenceRegistry";
 import { parseDrawingId, parseSceneBounds, type SceneBounds } from "./socketProtocol";
 import { registerAuthorizedRoomEvent, type RoomEventPayload } from "./socketRoomEvent";
 
-export const INVITE_HERE_LIMITS = {
+const INVITE_HERE_LIMITS = {
   durationMs: 15_000,
   cooldownMs: 5_000,
   responseEventsPerWindow: 4,
@@ -26,7 +26,7 @@ type ActiveInvitation = {
 
 const roomName = (drawingId: string) => `drawing_${drawingId}`;
 
-export const parseInviteHereRequest = (value: unknown): InviteRequest | null => {
+const parseInviteHereRequest = (value: unknown): InviteRequest | null => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const data = value as Record<string, unknown>;
   const drawingId = parseDrawingId(data.drawingId);
@@ -34,7 +34,7 @@ export const parseInviteHereRequest = (value: unknown): InviteRequest | null => 
   return drawingId && sceneBounds ? { drawingId, sceneBounds } : null;
 };
 
-export const parseInviteHereResponse = (value: unknown): InviteResponse | null => {
+const parseInviteHereResponse = (value: unknown): InviteResponse | null => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const data = value as Record<string, unknown>;
   const drawingId = parseDrawingId(data.drawingId);

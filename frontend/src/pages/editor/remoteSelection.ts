@@ -25,7 +25,7 @@ export const withLargeSelectionStatus = (username: unknown, active: boolean): st
   return active ? `${base}${LARGE_SELECTION_SUFFIX}` : base;
 };
 
-export const parseRemoteSelectedElementIds = (value: unknown): Record<string, true> | null => {
+const parseRemoteSelectedElementIds = (value: unknown): Record<string, true> | null => {
   if (!Array.isArray(value) || !value.every((id) => typeof id === "string" && id.length > 0)) {
     return null;
   }

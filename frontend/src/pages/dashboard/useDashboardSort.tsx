@@ -5,10 +5,10 @@ import type { DrawingSortField, SortDirection } from "../../api";
 
 const DASHBOARD_SORT_STORAGE_KEY = "excalidash-dashboard-sort";
 
-export const isSortField = (value: unknown): value is DrawingSortField =>
+const isSortField = (value: unknown): value is DrawingSortField =>
   value === "name" || value === "createdAt" || value === "updatedAt";
 
-export const isSortDirection = (value: unknown): value is SortDirection =>
+const isSortDirection = (value: unknown): value is SortDirection =>
   value === "asc" || value === "desc";
 
 const readStoredSortConfig = (): {
@@ -40,7 +40,7 @@ const writeStoredSortConfig = (config: { field: DrawingSortField; direction: Sor
   }
 };
 
-export const sortOptions: {
+const sortOptions: {
   field: DrawingSortField;
   label: string;
   icon: React.ReactNode;

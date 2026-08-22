@@ -4,7 +4,7 @@ import { subjectKey } from "./subjectKey";
 import { derivePresenceColor, toPresenceInitials } from "../server/socketPresence";
 
 /** Enough for a row of faces. More than a dozen is a list, not a row. */
-export const MAX_CARD_MEMBERS = 12;
+const MAX_CARD_MEMBERS = 12;
 
 export type DrawingMemberProjection = {
   subjectKey: string;

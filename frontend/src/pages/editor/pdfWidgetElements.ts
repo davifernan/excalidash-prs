@@ -2,10 +2,10 @@ import { convertToExcalidrawElements } from "@excalidraw/excalidraw";
 
 export const PDF_WIDGET_LINK = "excalidash://pdf-widget";
 export const ASSET_WIDGET_LINK = "excalidash://asset-widget";
-export const PDF_WIDGET_WIDTH = 480;
+const PDF_WIDGET_WIDTH = 480;
 export const PDF_WIDGET_HEIGHT = 680;
-export const TEXT_WIDGET_WIDTH = 520;
-export const TEXT_WIDGET_HEIGHT = 560;
+const TEXT_WIDGET_WIDTH = 520;
+const TEXT_WIDGET_HEIGHT = 560;
 
 export type AssetWidgetKind = "pdf" | "markdown" | "text";
 
@@ -27,9 +27,8 @@ type EmbeddableLike = {
   customData?: Record<string, unknown>;
 };
 
-export const isPdfWidgetLink = (link: string) => link === PDF_WIDGET_LINK;
-export const isAssetWidgetLink = (link: string) =>
-  link === ASSET_WIDGET_LINK || isPdfWidgetLink(link);
+const isPdfWidgetLink = (link: string) => link === PDF_WIDGET_LINK;
+const isAssetWidgetLink = (link: string) => link === ASSET_WIDGET_LINK || isPdfWidgetLink(link);
 
 /**
  * Whether Excalidraw may embed this link.

@@ -13,7 +13,7 @@ export type ImageLimits = {
   timeoutMs: number;
 };
 
-export class PreviewImageError extends Error {
+class PreviewImageError extends Error {
   constructor(message: string) {
     super(message);
     this.name = "PreviewImageError";

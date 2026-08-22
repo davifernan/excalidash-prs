@@ -30,9 +30,9 @@ import type { StoredFile } from "./assetStorage";
 export type AssetKind = "PDF" | "MARKDOWN" | "TEXT";
 
 /** Grace period for an upload that no save ever referred to. */
-export const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
+const PENDING_TTL_MS = 24 * 60 * 60 * 1000;
 /** Grace period before bytes nobody references are removed from disk. */
-export const BLOB_GRACE_MS = 24 * 60 * 60 * 1000;
+const BLOB_GRACE_MS = 24 * 60 * 60 * 1000;
 
 export class QuotaExceededError extends Error {
   constructor(usedBytes: number, limitBytes: number) {

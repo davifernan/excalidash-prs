@@ -25,7 +25,7 @@ export const CURSOR_CHAT_MAX_LENGTH = 140;
  * with a trailing edge means the last thing typed always arrives, which is the
  * only version that has to.
  */
-export const CURSOR_CHAT_SEND_INTERVAL_MS = 150;
+const CURSOR_CHAT_SEND_INTERVAL_MS = 150;
 
 export type CursorChatSocket = {
   emit: (event: string, payload: unknown) => void;
@@ -226,7 +226,7 @@ export const startCursorChat = ({
   return { controller, ...cursorChatBindings(controller) };
 };
 
-export const cursorChatBindings = (chat: CursorChatController) => ({
+const cursorChatBindings = (chat: CursorChatController) => ({
   decorateName: (name: string, presenceId: string) =>
     withCursorChat(name, chat.remote.get(presenceId)),
   /** Presence is the authority on who is here, so it prunes what they said. */

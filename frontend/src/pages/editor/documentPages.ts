@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io-client";
 
-export const DOCUMENT_PAGE_EVENT = "document-page-update";
+const DOCUMENT_PAGE_EVENT = "document-page-update";
 export const DOCUMENT_PAGE_COMMAND_EVENT = "document-page-command";
 
 /** Which page each document widget on the board is turned to, by element id. */

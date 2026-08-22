@@ -34,7 +34,7 @@ const isTyping = (target: EventTarget | null): boolean => {
   );
 };
 
-export const STICKY_TOOL = "sticky";
+const STICKY_TOOL = "sticky";
 
 type Options = {
   excalidrawAPI: { current: any };

@@ -20,33 +20,8 @@ export type TextAsset = {
 export type DocumentAsset = PdfAsset | TextAsset;
 export type UploadDocumentKind = "pdf" | "markdown" | "text";
 
-export type AssetUsage = {
-  usedBytes: number;
-  limitBytes: number;
-};
-
 const assetPath = (drawingId: string, assetId: string) =>
   `/drawings/${encodeURIComponent(drawingId)}/assets/${encodeURIComponent(assetId)}`;
-
-export const uploadPdfAsset = async (
-  drawingId: string,
-  file: File,
-  onProgress?: (percent: number) => void,
-): Promise<PdfAsset> => {
-  const response = await api.post<PdfAsset>(
-    `/drawings/${encodeURIComponent(drawingId)}/assets`,
-    file,
-    {
-      params: { name: file.name },
-      headers: { "Content-Type": "application/pdf" },
-      onUploadProgress: (event) => {
-        if (!event.total) return;
-        onProgress?.(Math.min(100, Math.round((event.loaded * 100) / event.total)));
-      },
-    },
-  );
-  return response.data;
-};
 
 const contentTypeFor = (kind: UploadDocumentKind) => {
   if (kind === "markdown") return "text/markdown; charset=utf-8";
@@ -92,11 +67,6 @@ export const getDocumentContent = async (drawingId: string, assetId: string): Pr
   const response = await api.get<string>(`${assetPath(drawingId, assetId)}/content`, {
     responseType: "text",
   });
-  return response.data;
-};
-
-export const getAssetUsage = async (): Promise<AssetUsage> => {
-  const response = await api.get<AssetUsage>("/assets/usage");
   return response.data;
 };
 

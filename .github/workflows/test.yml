@@ -79,6 +79,33 @@ jobs:
           cd frontend
           npm test
 
+  dead-code:
+    name: Dead Code
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install package dependencies
+        run: |
+          npm ci --prefix backend
+          npm ci --prefix frontend
+
+      - name: Check backend dead code
+        run: npm run check:dead-code --prefix backend
+
+      - name: Check frontend dead code
+        run: npm run check:dead-code --prefix frontend
+
   e2e-tests:
     name: E2E Browser Tests
     runs-on: ubuntu-latest

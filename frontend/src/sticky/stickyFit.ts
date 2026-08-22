@@ -16,7 +16,7 @@
 import { restoreElements } from "@excalidraw/excalidraw";
 
 /** Excalidraw's own padding between a container and its label, per side. */
-export const BOUND_TEXT_PADDING = 5;
+const BOUND_TEXT_PADDING = 5;
 
 /**
  * Sizes to fall back through, largest first.

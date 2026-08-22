@@ -15,7 +15,7 @@ export class ImportValidationError extends Error {
   }
 }
 
-export const excalidashManifestSchemaV1 = z.object({
+const excalidashManifestSchemaV1 = z.object({
   format: z.literal("excalidash"),
   formatVersion: z.literal(1),
   exportedAt: z.string().min(1),
@@ -47,7 +47,7 @@ export const excalidashManifestSchemaV1 = z.object({
 const manifestCollectionSchema = excalidashManifestSchemaV1.shape.collections.element;
 const manifestDrawingSchema = excalidashManifestSchemaV1.shape.drawings.element;
 
-export const excalidashManifestSchemaV2 = z.object({
+const excalidashManifestSchemaV2 = z.object({
   format: z.literal("excalidash"),
   formatVersion: z.literal(2),
   exportedAt: z.string().min(1),

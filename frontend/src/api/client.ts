@@ -16,4 +16,3 @@ api.interceptors.request.use((request) => {
 
 export { default as axios } from "axios";
 export const isAxiosError = axios.isAxiosError;
-export default api;

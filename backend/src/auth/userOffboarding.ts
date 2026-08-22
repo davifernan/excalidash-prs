@@ -3,7 +3,7 @@ import type { Prisma, PrismaClient } from "../generated/client";
 import { revokeUserCredentials } from "./userCredentialRevocation";
 
 export const COMPANY_ARCHIVE_USER_EMAIL = "deleted-boards@placeholder.excalidash.invalid";
-export const COMPANY_ARCHIVE_USER_NAME = "Deleted user boards";
+const COMPANY_ARCHIVE_USER_NAME = "Deleted user boards";
 
 export class UserOffboardingError extends Error {
   constructor(

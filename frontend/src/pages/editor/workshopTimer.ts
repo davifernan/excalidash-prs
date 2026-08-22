@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io-client";
 
-export const WORKSHOP_TIMER_EVENT = "workshop-timer-update";
+const WORKSHOP_TIMER_EVENT = "workshop-timer-update";
 export const WORKSHOP_TIMER_COMMAND_EVENT = "workshop-timer-command";
 
 export type WorkshopTimerStatus = "idle" | "running" | "paused" | "finished";

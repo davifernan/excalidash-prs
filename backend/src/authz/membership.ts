@@ -131,7 +131,7 @@ export const getDrawingMembership = async (params: {
   return memberships.get(params.drawingId) ?? null;
 };
 
-export const canManageSharing = (membership: DrawingMembership | null): boolean =>
+const canManageSharing = (membership: DrawingMembership | null): boolean =>
   membership?.level === "owner";
 
 /**

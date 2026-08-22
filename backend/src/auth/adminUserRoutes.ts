@@ -13,7 +13,7 @@ import { COMPANY_ARCHIVE_USER_EMAIL } from "./userOffboarding";
 import { revokeUserCredentials } from "./userCredentialRevocation";
 import { registerAdminUserOffboardingRoutes } from "./adminUserOffboardingRoutes";
 
-export const INVITE_VALID_DAYS = 7;
+const INVITE_VALID_DAYS = 7;
 export const registerAdminUserRoutes = (deps: RegisterAdminRoutesDeps) => {
   const {
     router,

@@ -14,12 +14,11 @@
     "test:e2e": "playwright test",
     "test:e2e:ui": "playwright test --ui",
     "check:max-lines": "node ../scripts/check-source-line-count.cjs",
+    "check:dead-code": "npx --yes knip@5.88.1 --include files,dependencies,devDependencies",
     "format": "prettier --write \"src/**/*.{ts,tsx}\"",
     "format:check": "prettier --check \"src/**/*.{ts,tsx}\""
   },
   "dependencies": {
-    "@dnd-kit/core": "^6.3.1",
-    "@dnd-kit/utilities": "^3.2.2",
     "@excalidraw/excalidraw": "^0.18.1",
     "@types/lodash": "^4.17.20",
     "axios": "^1.16.1",
@@ -34,8 +33,7 @@
     "react-router-dom": "^7.17.0",
     "remark-gfm": "^4.0.1",
     "socket.io-client": "^4.8.1",
-    "sonner": "^2.0.7",
-    "tailwind-merge": "^3.4.0"
+    "sonner": "^2.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

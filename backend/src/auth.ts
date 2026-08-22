@@ -95,7 +95,7 @@ type CreateAuthRouterDeps = {
   optionalAuth: express.RequestHandler;
   authModeService: AuthModeService;
 };
-export const createAuthRouter = (deps: CreateAuthRouterDeps): express.Router => {
+const createAuthRouter = (deps: CreateAuthRouterDeps): express.Router => {
   const { prisma, requireAuth, optionalAuth, authModeService } = deps;
   const router = express.Router();
   const ensureSystemConfig = authModeService.ensureSystemConfig;

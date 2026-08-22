@@ -18,7 +18,7 @@ const responseMessage = (error: unknown): string | null => {
   return typeof message === "string" ? message : null;
 };
 
-export const getDocumentUploadErrorMessage = (error: unknown, kind: UploadDocumentKind): string => {
+const getDocumentUploadErrorMessage = (error: unknown, kind: UploadDocumentKind): string => {
   const label = kind === "pdf" ? "PDF" : kind === "markdown" ? "Markdown file" : "text file";
   if (!isAxiosError(error)) return `Failed to upload the ${label}.`;
   const status = error.response?.status;
@@ -36,11 +36,11 @@ export const getDocumentUploadErrorMessage = (error: unknown, kind: UploadDocume
   return serverMessage || `Failed to upload the ${label}.`;
 };
 
-export const isPdfFile = (file: File) =>
+const isPdfFile = (file: File) =>
   file.type.toLowerCase() === "application/pdf" ||
   (file.type === "" && file.name.toLowerCase().endsWith(".pdf"));
 
-export const documentKindForFile = (file: File): UploadDocumentKind | null => {
+const documentKindForFile = (file: File): UploadDocumentKind | null => {
   if (isPdfFile(file)) return "pdf";
   const name = file.name.toLowerCase();
   if (name.endsWith(".md") || name.endsWith(".markdown")) return "markdown";
@@ -100,5 +100,3 @@ export const addDroppedDocumentWidgets = async ({
 };
 
 export const addDroppedPdfWidgets = addDroppedDocumentWidgets;
-export const getPdfUploadErrorMessage = (error: unknown) =>
-  getDocumentUploadErrorMessage(error, "pdf");

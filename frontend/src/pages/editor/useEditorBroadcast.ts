@@ -5,6 +5,7 @@ import { boardSettingsSignature, getFilesDelta, shouldSaveBoardSettings } from "
 
 const ELEMENT_ORDER_BYTE_LIMIT = 8 * 1024 * 1024;
 const ELEMENT_UPDATE_ACK_TIMEOUT_MS = 3_000;
+const ELEMENT_UPDATE_RETRY_DELAY_MS = 1_000;
 
 const elementOrderByteLength = (ids: readonly string[]) => {
   const encoder = new TextEncoder();
@@ -60,6 +61,13 @@ export const useEditorBroadcast = ({
   setHasSceneChangesSinceLoad,
 }: UseEditorBroadcastParams) => {
   const timeoutRef = useRef<number | null>(null);
+  const deliveryRetryTimeoutRef = useRef<number | null>(null);
+  const deliveryRetryArgsRef = useRef<[readonly any[], Record<string, any> | undefined] | null>(
+    null,
+  );
+  const emitChangesRef = useRef<
+    (elements: readonly any[], currentFiles?: Record<string, any>) => void
+  >(() => undefined);
   const lastRunAtRef = useRef(0);
   const trailingArgsRef = useRef<[readonly any[], Record<string, any> | undefined] | null>(null);
 
@@ -137,7 +145,18 @@ export const useEditorBroadcast = ({
           socket
             .timeout(ELEMENT_UPDATE_ACK_TIMEOUT_MS)
             .emit("element-update", payload, (error: unknown, response: unknown) => {
-              if (!error) acknowledge(response);
+              if (!error) {
+                acknowledge(response);
+                return;
+              }
+              deliveryRetryArgsRef.current = [normalizedElements, nextFiles];
+              if (deliveryRetryTimeoutRef.current !== null) return;
+              deliveryRetryTimeoutRef.current = window.setTimeout(() => {
+                deliveryRetryTimeoutRef.current = null;
+                const args = deliveryRetryArgsRef.current;
+                deliveryRetryArgsRef.current = null;
+                if (args) emitChangesRef.current(...args);
+              }, ELEMENT_UPDATE_RETRY_DELAY_MS);
             });
         } else {
           socket.emit("element-update", payload, acknowledge);
@@ -174,6 +193,7 @@ export const useEditorBroadcast = ({
       socketRef,
     ],
   );
+  emitChangesRef.current = emitChanges;
 
   const broadcastChanges = useCallback(
     (elements: readonly any[], currentFiles?: Record<string, any>) => {
@@ -210,6 +230,9 @@ export const useEditorBroadcast = ({
     () => () => {
       if (timeoutRef.current) {
         window.clearTimeout(timeoutRef.current);
+      }
+      if (deliveryRetryTimeoutRef.current !== null) {
+        window.clearTimeout(deliveryRetryTimeoutRef.current);
       }
     },
     [],

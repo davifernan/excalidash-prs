@@ -13,13 +13,13 @@ const randomCodeChars = (length: number): string => {
   return out;
 };
 
-export const normalizeBootstrapSetupCode = (value: string): string =>
+const normalizeBootstrapSetupCode = (value: string): string =>
   value
     .toUpperCase()
     .replace(/[^A-Z0-9]/g, "")
     .trim();
 
-export const hashBootstrapSetupCode = (normalizedCode: string): string =>
+const hashBootstrapSetupCode = (normalizedCode: string): string =>
   crypto.createHash("sha256").update(normalizedCode, "utf8").digest("hex");
 
 const timingSafeHexCompare = (expectedHex: string, actualHex: string): boolean => {
@@ -63,7 +63,7 @@ const getBootstrapState = async (
   return { systemConfig, bootstrapUser, activeUsers };
 };
 
-export const shouldRequireBootstrapSetupCode = async (
+const shouldRequireBootstrapSetupCode = async (
   prisma: PrismaClient,
   options: { authMode: "local" | "hybrid" | "oidc_enforced" },
 ): Promise<boolean> => {

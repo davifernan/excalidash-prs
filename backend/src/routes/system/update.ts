@@ -32,23 +32,23 @@ let cache: {
   response: Omit<UpdateResponse, "currentVersion">;
 } | null = null;
 
-export const parseChannel = (raw: unknown): UpdateChannel => {
+const parseChannel = (raw: unknown): UpdateChannel => {
   const normalized = typeof raw === "string" ? raw.trim().toLowerCase() : "";
   return normalized === "prerelease" ? "prerelease" : "stable";
 };
 
-export const envOutboundEnabled = (): boolean => {
+const envOutboundEnabled = (): boolean => {
   const raw = (process.env.UPDATE_CHECK_OUTBOUND ?? "true").trim().toLowerCase();
   return raw === "true" || raw === "1" || raw === "yes";
 };
 
-export const envGithubToken = (): string | null => {
+const envGithubToken = (): string | null => {
   const raw = process.env.UPDATE_CHECK_GITHUB_TOKEN ?? process.env.GITHUB_TOKEN ?? "";
   const trimmed = raw.trim();
   return trimmed.length > 0 ? trimmed : null;
 };
 
-export const pickLatestRelease = (
+const pickLatestRelease = (
   releases: GithubRelease[],
   channel: UpdateChannel,
 ): GithubRelease | null => {
@@ -82,7 +82,7 @@ export const pickLatestRelease = (
   return best.r;
 };
 
-export const normalizeVersion = (raw: string): string | null => {
+const normalizeVersion = (raw: string): string | null => {
   const parsed = parseSemver(raw);
   if (!parsed) return null;
   const base = `${parsed.major}.${parsed.minor}.${parsed.patch}`;

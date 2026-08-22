@@ -11,11 +11,13 @@ describe("socket collaboration security and follow state", () => {
   let io: FakeIo;
   let allowed: boolean;
   let accessLookups: number;
+  let documentPageFindMany: ReturnType<typeof vi.fn>;
 
   beforeEach(() => {
     io = new FakeIo();
     allowed = true;
     accessLookups = 0;
+    documentPageFindMany = vi.fn().mockResolvedValue([]);
     const prisma = {
       drawing: {
         findUnique: async () => {
@@ -24,6 +26,7 @@ describe("socket collaboration security and follow state", () => {
         },
       },
       drawingLinkShare: { findFirst: async () => null },
+      documentPageView: { findMany: documentPageFindMany },
     };
     registerSocketHandlers({
       io: io as any,
@@ -83,6 +86,27 @@ describe("socket collaboration security and follow state", () => {
       button: "up",
     });
     expect(lastEmission("cursor-move", room("drawing-1"))?.payload.presenceId).toBe("socket-old");
+  });
+
+  it("logs a document page snapshot failure without rejecting the room join", async () => {
+    const snapshotError = new Error("database unavailable");
+    documentPageFindMany.mockRejectedValueOnce(snapshotError);
+    const errorLog = vi.spyOn(console, "error").mockImplementation(() => undefined);
+    try {
+      const socket = await io.connect("socket-page-snapshot-error");
+
+      const ack = await join(socket);
+
+      expect(ack).toMatchObject({ ok: true });
+      await vi.waitFor(() =>
+        expect(errorLog).toHaveBeenCalledWith(
+          "Document page snapshot failed while joining a board:",
+          snapshotError,
+        ),
+      );
+    } finally {
+      errorLog.mockRestore();
+    }
   });
 
   it("whitelists cursor and element relay fields", async () => {
