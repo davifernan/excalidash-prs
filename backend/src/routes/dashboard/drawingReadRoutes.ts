@@ -41,9 +41,27 @@ export const registerDrawingReadRoutes = (app: express.Express, context: Drawing
         });
       }
 
+      // Name every column this route is allowed to read. A `select` rather than
+      // an `include` is the point: with `include` the row carries every column
+      // the table has, and the response below only removed the ones somebody
+      // remembered. The next column with an id in it would have travelled the
+      // same way — silently, because nothing here would have had to change.
       const drawing = await prisma.drawing.findUnique({
         where: { id },
-        include: { createdBy: { select: { name: true } } },
+        select: {
+          id: true,
+          name: true,
+          elements: true,
+          appState: true,
+          files: true,
+          preview: true,
+          version: true,
+          userId: true,
+          collectionId: true,
+          createdAt: true,
+          updatedAt: true,
+          createdBy: { select: { name: true } },
+        },
       });
       if (!drawing) {
         return res.status(404).json({
@@ -53,15 +71,19 @@ export const registerDrawingReadRoutes = (app: express.Express, context: Drawing
       }
 
       const isOwner = principal?.kind === "user" && principal.userId === drawing.userId;
-      const { createdBy, createdByUserId: _createdByUserId, userId, ...row } = drawing;
       return res.json({
-        ...row,
+        id: drawing.id,
+        name: drawing.name,
+        preview: drawing.preview,
+        version: drawing.version,
+        createdAt: drawing.createdAt,
+        updatedAt: drawing.updatedAt,
         // Who drew it is worth showing; which account row that is, is not. That
         // goes for the owner as well: this route answers anonymous share-link
         // visitors, and an account id handed to one of them identifies the same
         // person on every other board they are ever linked to.
-        ...(isOwner ? { userId } : {}),
-        creatorName: createdBy?.name ?? null,
+        ...(isOwner ? { userId: drawing.userId } : {}),
+        creatorName: drawing.createdBy?.name ?? null,
         // Collections (and trash mapping) are owner-scoped. For shared/public access, avoid leaking
         // owner collection ids like `trash:<ownerId>` and avoid implying the viewer can organize it.
         collectionId: isOwner
